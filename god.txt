@@ -1,0 +1,9 @@
+git+https://github.com/huggingface/diffusers
+accelerate 
+peft
+safetensors
+transformers
+torchAO
+bitsandbytes
+jupyterlab
+ipywidgets

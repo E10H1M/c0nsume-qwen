@@ -1,0 +1,42 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+
+# ---- Virtual environment ----
+venv/
+.env/
+.venv/
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+*.ipynb_convert/
+
+# ---- System cruft ----
+.DS_Store
+Thumbs.db
+
+# ---- Logs ----
+*.log
+
+# ---- Weights / Models ----
+# (don’t commit big downloaded models or loras)
+weights/
+*.safetensors
+*.bin
+*.ckpt
+*.pt
+
+# ---- Hugging Face cache ----
+huggingface/
+~/.cache/huggingface/
+~/.cache/torch/
+
+# ---- VSCode / IDE ----
+.vscode/
+.idea/

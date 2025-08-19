@@ -1,0 +1,47 @@
+# If you have crappy internet like me, downloading this way will prevent 
+# the downloading of weights from freezing and failing. 
+# Even so, be patient. It will take a while.
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include "scheduler/*" 
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include "text_encoder/*" 
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include "tokenizer/*" 
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include "transformer/*" 
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include "vae/*" 
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include ".gitattributes" 
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include "LICENSE" 
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include "model_index.json" 
+
+
+hf download Qwen/Qwen-Image \
+  --local-dir /path/to/weights/Qwen-Image \
+  --include "README.md" 
+
+
+
+# For LORAs
+# in your lora folder:
+curl -L -O https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors
+curl -L -O https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-8steps-V1.1.safetensors
