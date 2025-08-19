@@ -4,7 +4,7 @@
 
 
 ### SET UP YOUR `venv`:
-Create a python virtual environment (tested on 3.12 but I image 3.9 and forward all work fine):
+Create a python virtual environment (tested on 3.12 but I imagine 3.9 and forward all work fine):
 ```
 git clone https://github.com/E10H1M/c0nsume-qwen.git
 cd c0nsume-qwen
