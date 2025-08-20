@@ -2,6 +2,9 @@
 # the downloading of weights from freezing and failing. 
 # Even so, be patient. It will take a while.
 
+
+----------------------------QWEN IMAGE -----------------------------------
+# FOR QWEN IMAGE
 hf download Qwen/Qwen-Image \
   --local-dir /path/to/weights/Qwen-Image \
   --include "scheduler/*" 
@@ -39,9 +42,55 @@ hf download Qwen/Qwen-Image \
   --local-dir /path/to/weights/Qwen-Image \
   --include "README.md" 
 
-
+----------------------------- LORAS ------------------------------------
 
 # For LORAs
 # in your lora folder:
 curl -L -O https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors
 curl -L -O https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-8steps-V1.1.safetensors
+
+
+------------------------ QWEN IMAGE EDIT -------------------------------
+
+# FOR QWEN IMAGE EDIT
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "processor/*" 
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "scheduler/*" 
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "text_encoder/*" 
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "tokenizer/*" 
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "transformer/*" 
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "vae/*" 
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include ".gitattributes" 
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "LICENSE" 
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "model_index.json" 
+
+
+hf download Qwen/Qwen-Image-Edit \
+  --local-dir /path/to/weights/Qwen-Image-Edit \
+  --include "README.md" 
+
