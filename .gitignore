@@ -49,3 +49,7 @@ client/target/
 # If it's an application (binary), KEEP Cargo.lock.
 # remember to include the cargo.lock once ready to move into beta
 client/Cargo.lock
+
+
+# ---- Generated outputs ----
+server/outputs/
