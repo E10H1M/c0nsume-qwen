@@ -1,0 +1,113 @@
+/* /static/css/sidebar.css */
+.sidebar {
+  position: fixed;
+  top: 32px;
+  left: -260px;
+  width: 260px;
+  height: calc(100% - 32px);
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 20px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+}
+.sidebar.open { left: 0; }
+
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 16px;
+  color: var(--ink);
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sidebar li {
+  padding: 6px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+}
+
+/* 🔹 History thumbnails override */
+.sidebar li:has(.history-thumb) {
+  border-bottom: none;   /* don’t cut through the image */
+  padding: 0;
+}
+
+.sidebar .history-thumb {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;     /* crops neatly */
+  border-radius: 6px;
+  display: block;
+  box-shadow: 0 1px 4px var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.sidebar .history-thumb:hover {
+  transform: scale(1.05);
+}
+
+.sidebar .close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  float: right;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+
+
+
+/* 🔹 Modal overlay */
+/* Modal overlay */
+.image-modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  padding: 20px; /* buffer so image never touches edges */
+}
+
+/* Modal content */
+.image-modal-content {
+  position: relative;
+  max-width: 80%;   /* 🔹 scaled down */
+  max-height: 80%;  /* 🔹 scaled down */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-modal-content img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  object-fit: contain; /* 🔹 preserves aspect ratio */
+}
+
+/* Close button */
+.image-modal .modal-close {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}

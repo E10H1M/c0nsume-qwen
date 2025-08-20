@@ -40,3 +40,16 @@ huggingface/
 # ---- VSCode / IDE ----
 .vscode/
 .idea/
+
+
+
+# ---- Rust (Client) ----
+client/target/
+# If client is a library, ignore Cargo.lock.
+# If it's an application (binary), KEEP Cargo.lock.
+# remember to include the cargo.lock once ready to move into beta
+client/Cargo.lock
+
+
+# ---- Generated outputs ----
+server/outputs/
