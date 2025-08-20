@@ -40,26 +40,34 @@ Automation for downloads will be added soon, some time tomorrow or the following
 
 
 ### RUN NOTEBOOKS:
-To open up jupyterlab:
+1. Open up jupyterlab:
 ```
 jupyter lab
 ```
+2. Enter the `/notebooks` directory.
 
-For bitsandbytes (need ~16 GB of VRAM), use `qwen_bnb.ipynb` <br>
-For torchtao  (need 24GB VRAM GPU), use `qwen_torchao.ipynb`
 
-## Note: 
-The notebooks have been moved to `/notebooks` but should still run fine as they use absolute paths. Just make sure you update them in the notebooks themselves.
-
+For bitsandbytes (need ~16 GB of VRAM), use 
+```
+qwen_img_bnb.ipynb
+qwen_edit_bnb.ipynb
+```
+For torchtao  (need 24GB VRAM GPU), use 
+```
+qwen_img_torchao.ipynb
+qwen_edit_torchao.ipynb
+```
 -------------------
-This repo is susceptible to active changes. Especially the Readme as more model architectures are included. Qwen-Image-Edit will be added next.
+## Note: 
+
+
+This repo is susceptible to active changes. Especially the Readme as more model architectures are included. Next update will add Qwen-Image-Edit to the Rust/Python client server system.
 
 <br>
 <br>
 
 Rust based client server now under `/client`. Refer to its README.<br>
 Python based backend server now under `/server`. Refer to its README.<br>
-Qwen-Image-Edit notebooks coming to the repo as of August 20th 2025
 <br>
 <br>
 <br>
