@@ -3,13 +3,24 @@ import os
 import torch
 from diffusers import TorchAoConfig
 
-# Model paths
-MODEL_ID = "/path/to/Qwen/weights/Qwen-Image"
-LORA_PATH = "/path/to/Qwen/Lora/weights/Qwen-Image-Lightning-4steps-V1.0.safetensors"
+# Available models (named for clarity)
+AVAILABLE_MODELS = {
+    "image": "/path/to/Qwen/weights/Qwen-Image",
+    "edit": "/path/to/Qwen/weights/Qwen-Image-Edit",
+}
+
+# Active model (default = image)
+MODEL_ID = AVAILABLE_MODELS["edit"]
+
+# Shared LoRA path (works for both)
+LORA_PATH = "/path/to/Qwen-Lora/Qwen-Image-Lightning-4steps-V1.0.safetensors"
 
 # Output directory (fake S3 bucket for now)
 OUTPUT_DIR = "outputs"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+UPLOADS_DIR = "uploads"
+os.makedirs(UPLOADS_DIR, exist_ok=True)
 
 # Aspect ratios (width, height)
 ASPECT_RATIOS = {
@@ -26,3 +37,17 @@ ASPECT_RATIOS = {
 DEVICE = "cuda"
 TORCH_DTYPE = torch.bfloat16
 QUANT_CONFIG = TorchAoConfig("int8wo")
+
+
+# --- Helpers for managing active model ---
+def get_model_id() -> str:
+    """Return the currently active model path."""
+    return MODEL_ID
+
+
+def set_model_id(name: str):
+    """Update the active model by key ('image' or 'edit')."""
+    global MODEL_ID
+    if name not in AVAILABLE_MODELS:
+        raise ValueError(f"Invalid model key '{name}'. Must be one of {list(AVAILABLE_MODELS.keys())}.")
+    MODEL_ID = AVAILABLE_MODELS[name]

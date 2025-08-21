@@ -1,7 +1,7 @@
 # Setting up the Backend 
 ## Installing the `requirements`
 ```
-pip install starlette uvicorn
+pip install starlette uvicorn python-multipart
 ```
 
 ## Starting up the `server`

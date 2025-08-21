@@ -1,4 +1,13 @@
-// static/js/menubar.js
+// /static/js/menubar.js
+(function loadMenuBarCSS() {
+  if (!document.querySelector('link[href="/static/css/menubar.css"]')) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "/static/css/menubar.css";
+    document.head.appendChild(link);
+  }
+})();
+
 
 export function createMenuBar() {
   const nav = document.createElement("nav");
@@ -69,6 +78,37 @@ export function createMenuBar() {
     { label: "Copy", onClick: () => console.log("copy") },
     { label: "Paste", onClick: () => console.log("paste") }
   ]));
+
+
+
+  // MODE MENU
+  menuList.appendChild(makeMenu("Mode", [
+    {
+      label: "Image Edit",
+      onClick: () =>
+        window.dispatchEvent(new CustomEvent("app:setMode", { detail: { mode: "edit" } })),
+    },
+    {
+      label: "Generate",
+      onClick: () =>
+        window.dispatchEvent(new CustomEvent("app:setMode", { detail: { mode: "generate" } })),
+    },
+  ]));
+
+  // track active mode for a ✓ mark
+  window.addEventListener("app:modeChanged", (e) => {
+    const mode = e.detail?.mode;
+    // naive label match; swap to ids if you want
+    [...document.querySelectorAll(".dropdown button")].forEach(b => {
+      if (b.textContent.endsWith(" ✓")) b.textContent = b.textContent.slice(0, -2);
+    });
+    const btn = [...document.querySelectorAll(".dropdown button")]
+      .find(b => (mode === "edit" && b.textContent.startsWith("Image Edit")) ||
+                (mode === "generate" && b.textContent.startsWith("Generate")));
+    if (btn) btn.textContent += " ✓";
+  });
+
+
 
   // View menu
   const viewLi = document.createElement("li");

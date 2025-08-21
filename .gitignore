@@ -53,3 +53,4 @@ client/Cargo.lock
 
 # ---- Generated outputs ----
 server/outputs/
+server/uploads/
