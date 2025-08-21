@@ -1,0 +1,134 @@
+/* /static/css/menubar.css */
+
+/* ---------- Menubar container ---------- */
+.menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0 12px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  z-index: 1200;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Sidebar toggle inside menubar */
+.menubar .sidebar-toggle {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px 10px;
+  margin-right: 16px;
+  color: var(--ink);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.menubar .sidebar-toggle:hover {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+/* Top-level menu list */
+.menubar ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+.menubar > ul > li {
+  position: relative;
+  padding: 6px 10px;
+  cursor: default;
+  font-size: 14px;
+  color: var(--ink);
+  border-radius: 4px; /* so hover bg follows the shape */
+  transition: background 0.3s ease;
+}
+.menubar > ul > li:hover {
+  background: var(--border);
+}
+
+/* ---------- Dropdowns ---------- */
+.menubar .dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% - 1px);          /* overlap border to remove hover gap */
+  left: 0;
+  min-width: 160px;
+  background: var(--menu-bg);
+  border: 1px solid var(--menu-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 6px 0;
+  z-index: 2000;                  /* sit above content */
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Keep open while hovering label OR the dropdown itself, and support keyboard focus */
+.menubar > ul > li:hover > .dropdown,
+.menubar > ul > li:focus-within > .dropdown,
+.menubar .dropdown:hover {
+  display: block;
+}
+
+.menubar .dropdown li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  position: relative;
+}
+
+.menubar .dropdown button {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.menubar .dropdown button:hover {
+  background: var(--menu-hover);
+}
+
+.menubar .dropdown hr {
+  border: 0;
+  border-top: 1px solid var(--menu-border);
+  margin: 4px 0;
+}
+
+/* ---------- Nested submenus (e.g., Theme →) ---------- */
+.menubar .dropdown .dropdown {
+  top: 0;
+  left: 100%;
+  margin-left: -1px;              /* overlap to remove side gap */
+}
+
+/* Show nested when hovering its parent li or the submenu itself */
+.menubar .dropdown li:hover > .dropdown,
+.menubar .dropdown li:focus-within > .dropdown,
+.menubar .dropdown .dropdown:hover {
+  display: block;
+}
+
+/* Caret indicator for items that have a nested dropdown (Chromium supports :has) */
+.menubar .dropdown li:has(.dropdown) > button::after {
+  content: "▶";
+  float: right;
+  opacity: 0.6;
+}
+
+/* Optional: smooth theme transitions for dropdown specifically */
+.menubar .dropdown {
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
