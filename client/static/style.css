@@ -1,3 +1,5 @@
+/* /static/style.css  — GLOBAL BASE ONLY */
+
 /* ---------- Theme Variables ---------- */
 :root {
   --bg: #ffffff;
@@ -6,7 +8,7 @@
   --border: #e5e7eb;
   --panel: #f8fafc;
 
-  --button-bg: #111827;
+  --button-bg: #111827;     /* legacy tokens still useful app-wide */
   --button-text: #ffffff;
 
   --code-bg: #0f172a;
@@ -39,9 +41,14 @@ html[data-theme="dark"] {
   --shadow: rgba(0,0,0,.5);
 }
 
-/* Smooth transitions when switching themes */
-body, .menubar, .sidebar, pre, button, input, select, textarea, .menubar .dropdown {
-  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+/* Smooth theme transitions (global-only targets) */
+body,
+button,
+input,
+select,
+textarea,
+pre {
+  transition: background .3s ease, color .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 
 /* ---------- Base ---------- */
@@ -51,67 +58,22 @@ html, body { height: 100%; }
 body {
   margin: 32px auto;
   max-width: 1200px;
-  padding: 40px 20px 20px;   /* top padding = menubar height + gap */
+  padding: 40px 20px 20px;   /* top padding ≈ menubar height + breathing room */
   background: var(--bg);
   color: var(--ink);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
-/* ---------- Heading ---------- */
-h1 { margin: 0 0 18px 0; }
+/* Normalize form font inheritance (component styles handle appearance) */
+button, input, select, textarea { font: inherit; color: inherit; }
 
-/* ---------- Form ---------- */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(180px, 1fr));
-  gap: 14px;
-  align-items: start;
-}
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--muted);
-}
-input[type="text"],
-input[type="number"],
-select,
-textarea {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--bg);
-  color: var(--ink);
-  font-size: 14px;
-}
-textarea#prompt {
-  min-height: 180px;
-  resize: vertical;
-  line-height: 1.35;
-}
-.span-all { grid-column: 1 / -1; }
+/* Optional global heading rhythm (component headers usually override) */
+h1 { margin: 0 0 18px; }
 
-.controls { display: flex; gap: 10px; margin-top: 12px; }
-button {
-  padding: 10px 16px;
-  border: 0;
-  border-radius: 10px;
-  cursor: pointer;
-  background: var(--button-bg);
-  color: var(--button-text);
-  font-weight: 600;
-}
-button:disabled { opacity: .6; cursor: not-allowed; }
+/* ---------- Utilities ---------- */
+.small { font-size: 12px; color: var(--muted); }
 
-/* ---------- Output ---------- */
-#image-container { margin-top: 18px; }
-#image-container img {
-  max-width: 100%;
-  border-radius: 12px;
-  box-shadow: 0 2px 18px var(--shadow);
-}
+/* Code/pre blocks (handy for debug output anywhere) */
 pre {
   background: var(--code-bg);
   color: var(--code-text);
@@ -120,15 +82,11 @@ pre {
   overflow: auto;
   margin-top: 14px;
 }
-.small { font-size: 12px; color: var(--muted); }
 
 /* ---------- Responsive ---------- */
+/* Keep global container responsive; component layouts manage their own grids */
 @media (max-width: 900px) {
-  .grid { grid-template-columns: 1fr; }
-  .span-all { grid-column: auto; }
+  body { padding: 40px 14px 14px; }
 }
 
-/* ---------- Menubar ---------- */
-
-
-/* ---------- Sidebar ---------- */
+/* (menubar + sidebar styles are now in their own files) */
