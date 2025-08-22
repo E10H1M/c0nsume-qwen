@@ -1,5 +1,14 @@
 # Setting up the front end
 ## Installing the `requirements`
+Some requiremnts for linux:
+- pkg-config
+- libssl-dev
+```
+sudo apt update
+sudo apt install pkg-config libssl-dev
+```
+
+
 To build the rust project you would run this command:
 ```
 cargo build

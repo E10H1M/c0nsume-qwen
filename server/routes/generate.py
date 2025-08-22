@@ -4,6 +4,7 @@ import os
 from starlette.responses import JSONResponse
 from services.storage import persist_image
 from services.inference import run_inference_image, run_inference_edit
+from services.models import ensure_mode
 from config import ASPECT_RATIOS, UPLOADS_DIR
 from PIL import Image
 
@@ -13,6 +14,7 @@ async def generate_image(request):
     """
     data = await request.json()
     try:
+        ensure_mode(request.app, "image")
         image = run_inference_image(
             pipe=request.app.state.pipe,
             prompt=data.get("prompt", "No prompt provided"),
@@ -53,7 +55,8 @@ async def generate_edit(request):
         # input_image = Image.open(filepath).convert("RGB")
         with Image.open(filepath) as im:
             input_image = im.convert("RGB")
-
+            
+        ensure_mode(request.app, "edit")
         image = run_inference_edit(
             pipe=request.app.state.pipe,
             prompt=data.get("prompt", "No prompt provided"),

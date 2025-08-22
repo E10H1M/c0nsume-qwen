@@ -2,15 +2,11 @@
 
 from starlette.applications import Starlette
 from starlette.routing import Route
-from diffusers import AutoModel, DiffusionPipeline
-
-from config import (
-    MODEL_ID, LORA_PATH, TORCH_DTYPE, QUANT_CONFIG
-)
+from config import MODEL_ID, AVAILABLE_MODELS
 from routes import health_check
 from routes.generate import generate_image, generate_edit
 from routes.images import fetch_image, upload_image, fetch_upload
-
+from services.models import build_pipe
 
 def create_app():
     app = Starlette(debug=True, routes=[
@@ -24,19 +20,7 @@ def create_app():
 
     @app.on_event("startup")
     async def _startup():
-        transformer = AutoModel.from_pretrained(
-            MODEL_ID,
-            subfolder="transformer",
-            quantization_config=QUANT_CONFIG,
-            torch_dtype=TORCH_DTYPE,
-        )
-        pipe = DiffusionPipeline.from_pretrained(
-            MODEL_ID,
-            transformer=transformer,
-            torch_dtype=TORCH_DTYPE,
-        )
-        pipe.load_lora_weights(LORA_PATH)
-        pipe.enable_model_cpu_offload()
-        app.state.pipe = pipe
+        app.state.pipe = build_pipe(MODEL_ID)
+        app.state.active_key = next((k for k, v in AVAILABLE_MODELS.items() if v == MODEL_ID), None)
 
     return app
