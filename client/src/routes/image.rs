@@ -4,14 +4,19 @@ use actix_web::{web, HttpResponse, Responder};
 use actix_web::http::StatusCode as ActixStatusCode;
 use reqwest::Client;
 
-use crate::consts::{SERVER_IMAGE, SERVER_UPLOAD, PATH_IMAGE, PATH_UPLOAD, join_base};
+use crate::consts::{
+    PATH_IMAGE, PATH_UPLOAD,
+    join_base,
+    server_image, server_upload,
+};
 
 async fn fetch_image(
     path: web::Path<String>,
     client: web::Data<Client>,
 ) -> impl Responder {
     let uid = path.into_inner();
-    let url = join_base(SERVER_IMAGE, &format!("{PATH_IMAGE}{uid}"));
+    let base = server_image();
+    let url = join_base(&base, &format!("{PATH_IMAGE}{uid}"));
 
     match client.get(url).send().await {
         Ok(resp) => {
@@ -34,7 +39,8 @@ async fn fetch_upload(
     client: web::Data<Client>,
 ) -> impl Responder {
     let uid = path.into_inner();
-    let url = join_base(SERVER_UPLOAD, &format!("{PATH_UPLOAD}{uid}"));
+    let base = server_upload();
+    let url = join_base(&base, &format!("{PATH_UPLOAD}{uid}"));
 
     match client.get(url).send().await {
         Ok(resp) => {

@@ -5,9 +5,9 @@ use reqwest::Client;
 
 use crate::types::{PromptRequest, GenerateResponse};
 use crate::consts::{
-    SERVER_GENERATE_IMAGE, SERVER_GENERATE_EDIT,
     PATH_GENERATE_IMAGE, PATH_GENERATE_EDIT,
     join_base,
+    server_generate_image, server_generate_edit,
 };
 
 // POST /generate/image
@@ -15,7 +15,8 @@ async fn generate_image(
     json: web::Json<PromptRequest>,
     client: web::Data<Client>,
 ) -> impl Responder {
-    let url = join_base(SERVER_GENERATE_IMAGE, PATH_GENERATE_IMAGE);
+    let base = server_generate_image();
+    let url = join_base(&base, PATH_GENERATE_IMAGE);
     let res = client.post(url).json(&*json).send().await;
 
     match res {
@@ -32,7 +33,8 @@ async fn generate_edit(
     json: web::Json<PromptRequest>,
     client: web::Data<Client>,
 ) -> impl Responder {
-    let url = join_base(SERVER_GENERATE_EDIT, PATH_GENERATE_EDIT);
+    let base = server_generate_edit();
+    let url = join_base(&base, PATH_GENERATE_EDIT);
     let res = client.post(url).json(&*json).send().await;
 
     match res {

@@ -2,24 +2,28 @@
 import os
 import torch
 from diffusers import TorchAoConfig
+from dotenv import load_dotenv
+
+# Load .env file so env vars are available
+load_dotenv()
 
 # Available models (named for clarity)
 AVAILABLE_MODELS = {
-    "image": "/path/to/Qwen/weights/Qwen-Image",
-    "edit": "/path/to/Qwen/weights/Qwen-Image-Edit",
+    "image": os.environ["QWEN_IMAGE_MODEL"],
+    "edit": os.environ["QWEN_EDIT_MODEL"],
 }
 
 # Active model (default = image)
 MODEL_ID = AVAILABLE_MODELS["edit"]
 
 # Shared LoRA path (works for both)
-LORA_PATH = "/path/to/Qwen-Lora/Qwen-Image-Lightning-4steps-V1.0.safetensors"
+LORA_PATH = os.environ["QWEN_LORA_PATH"]
 
 # Output directory (fake S3 bucket for now)
-OUTPUT_DIR = "outputs"
+OUTPUT_DIR = os.environ["OUTPUT_DIR"]
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-UPLOADS_DIR = "uploads"
+UPLOADS_DIR = os.environ["UPLOADS_DIR"]
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 
 # Aspect ratios (width, height)
