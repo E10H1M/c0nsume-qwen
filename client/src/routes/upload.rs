@@ -4,14 +4,14 @@ use actix_web::{web, HttpResponse, Responder, HttpRequest};
 use actix_web::http::StatusCode as ActixStatusCode;
 use reqwest::Client;
 
-use crate::consts::{SERVER_IMAGE_UPLOAD, PATH_IMAGE_UPLOAD, join_base};
+use crate::consts::{PATH_IMAGE_UPLOAD, join_base, server_image_upload};
 
 async fn upload_image(
     req: HttpRequest,
     payload: web::Bytes,
     client: web::Data<Client>,
 ) -> impl Responder {
-    let mut builder = client.post(join_base(SERVER_IMAGE_UPLOAD, PATH_IMAGE_UPLOAD));
+    let mut builder = client.post(join_base(&server_image_upload(), PATH_IMAGE_UPLOAD));
 
     if let Some(ct) = req.headers().get("content-type") {
         if let Ok(ct_str) = ct.to_str() {
