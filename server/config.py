@@ -38,6 +38,11 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 UPLOADS_DIR = os.environ["UPLOADS_DIR"]
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 
+
+# --- Storage backend knobs (added) ---
+STORAGE_BACKEND = os.environ["STORAGE_BACKEND"]
+BUCK3T_BASE = os.environ.get("BUCK3T_BASE")
+
 # Aspect ratios (width, height)
 ASPECT_RATIOS = {
     "1:1": (1328, 1328),
