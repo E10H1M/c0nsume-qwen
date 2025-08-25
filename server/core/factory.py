@@ -6,7 +6,7 @@ from config import MODEL_ID, AVAILABLE_MODELS
 from routes import health_check
 from routes.generate import generate_image, generate_edit
 from routes.images import fetch_image, upload_image, fetch_upload
-from services.models import build_pipe
+from services.models import build_pipe_auto
 
 def create_app():
     app = Starlette(debug=True, routes=[
@@ -20,7 +20,9 @@ def create_app():
 
     @app.on_event("startup")
     async def _startup():
-        app.state.pipe = build_pipe(MODEL_ID)
-        app.state.active_key = next((k for k, v in AVAILABLE_MODELS.items() if v == MODEL_ID), None)
+        # MODEL_ID is a path, we want the key (image/edit)
+        active_key = next((k for k, v in AVAILABLE_MODELS.items() if v == MODEL_ID), None)
+        app.state.pipe = build_pipe_auto(active_key)
+        app.state.active_key = active_key
 
     return app
