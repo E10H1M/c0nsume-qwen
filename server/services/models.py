@@ -1,8 +1,8 @@
 # services/models.py
 import gc, torch
 import torch.nn as nn
-from diffusers import AutoModel, DiffusionPipeline
-from config import LORA_PATH, TORCH_DTYPE, QUANT_CONFIG, AVAILABLE_MODELS
+from diffusers import AutoModel, DiffusionPipeline, QwenImageTransformer2DModel, GGUFQuantizationConfig
+from config import LORA_PATH, TORCH_DTYPE, QUANT_CONFIG, AVAILABLE_MODELS, GGUF_MODELS, USE_GGUF
 
 def _gb(x):
     return f"{(x/(1024**3)):.2f} GB"
@@ -116,6 +116,41 @@ def build_pipe(model_id: str):
     pipe.enable_model_cpu_offload()
     return pipe
 
+def build_pipe_gguf(model_id: str, gguf_path: str):
+    print(f"[models] build_pipe_gguf: {model_id} <- {gguf_path}")
+    transformer = QwenImageTransformer2DModel.from_single_file(
+        gguf_path,
+        quantization_config=GGUFQuantizationConfig(compute_dtype=torch.bfloat16),
+        torch_dtype=torch.bfloat16,
+        config=model_id,
+        subfolder="transformer",
+    )
+    pipe = DiffusionPipeline.from_pretrained(
+        model_id,
+        transformer=transformer,   # override!
+        torch_dtype=torch.bfloat16,
+    )
+    pipe.load_lora_weights(LORA_PATH)
+    pipe.enable_model_cpu_offload()
+    return pipe
+
+
+
+
+def build_pipe_auto(key: str):
+    """
+    Smart builder: decides whether to load GGUF or HF model.
+    - key is 'image' or 'edit'
+    """
+    base = AVAILABLE_MODELS[key]
+    gguf = GGUF_MODELS.get(key)
+
+    if USE_GGUF == "true" and gguf:
+        return build_pipe_gguf(base, gguf)
+    else:
+        return build_pipe(base)
+
+
 def ensure_mode(app, needed_key: str):
     # no-op if already active & pipe exists
     if getattr(app.state, "active_key", None) == needed_key and getattr(app.state, "pipe", None) is not None:
@@ -124,7 +159,7 @@ def ensure_mode(app, needed_key: str):
     prev = getattr(app.state, "active_key", None)
     print(f"[models] ensure_mode: {prev} -> {needed_key}")
 
-    # offload & drop the old pipe
+    # offload & drop old
     old = getattr(app.state, "pipe", None)
     app.state.pipe = None
     if old is not None:
@@ -132,7 +167,7 @@ def ensure_mode(app, needed_key: str):
         del old
         gc.collect()
 
-    # build & activate the new pipe
-    app.state.pipe = build_pipe(AVAILABLE_MODELS[needed_key])
+    # build new (HF or GGUF transparently)
+    app.state.pipe = build_pipe_auto(needed_key)
     app.state.active_key = needed_key
     print(f"[models] ensure_mode: active='{needed_key}'")
