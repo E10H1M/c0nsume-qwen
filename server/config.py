@@ -7,14 +7,26 @@ from dotenv import load_dotenv
 # Load .env file so env vars are available
 load_dotenv()
 
+# if true, the user shouldn't be required to download the full transformers as the system should be bypassing them 
+USE_GGUF = os.environ["USE_GGUF"]
+
 # Available models (named for clarity)
 AVAILABLE_MODELS = {
-    "image": os.environ["QWEN_IMAGE_MODEL"],
-    "edit": os.environ["QWEN_EDIT_MODEL"],
+    "image": os.environ["QWEN_IMAGE_MODEL_DIR"],
+    "edit": os.environ["QWEN_EDIT_MODEL_DIR"],
 }
 
-# Active model (default = image)
-MODEL_ID = AVAILABLE_MODELS["edit"]
+
+# Optional GGUF overrides
+GGUF_MODELS = {
+    "image": os.environ.get("QWEN_IMAGE_GGUF"),
+    "edit": os.environ.get("QWEN_EDIT_GGUF"),
+}
+
+
+# Active model
+MODE = os.environ["MODE"]  # required
+MODEL_ID = AVAILABLE_MODELS[MODE]
 
 # Shared LoRA path (works for both)
 LORA_PATH = os.environ["QWEN_LORA_PATH"]
