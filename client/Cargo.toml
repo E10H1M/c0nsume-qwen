@@ -8,6 +8,8 @@ actix-web = "*"
 actix-files = "*"
 serde = { version = "*", features = ["derive"] }
 reqwest = { version = "*", features = ["json", "multipart"] }
-
 dotenvy = "*"
 serde_json = "1"
+uuid = { version = "1.18.0", features = ["v4"] }
+actix-multipart = "*"
+futures-util = "*"
