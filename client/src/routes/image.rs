@@ -8,6 +8,7 @@ use crate::consts::{
     PATH_IMAGE, PATH_UPLOAD,
     join_base,
     server_image, server_upload,
+    server_mode,
 };
 
 async fn fetch_image(
@@ -15,8 +16,17 @@ async fn fetch_image(
     client: web::Data<Client>,
 ) -> impl Responder {
     let uid = path.into_inner();
-    let base = server_image();
-    let url = join_base(&base, &format!("{PATH_IMAGE}{uid}"));
+    let mode = server_mode();
+
+    let url = if mode == "buck3t" {
+        // direct to bucket using SERVER_IMAGE as base
+        let base = server_image(); 
+        format!("{}objects/output/{uid}.png?download=0", base)
+    } else {
+        // local → unchanged
+        let base = server_image();
+        join_base(&base, &format!("{PATH_IMAGE}{uid}"))
+    };
 
     match client.get(url).send().await {
         Ok(resp) => {
