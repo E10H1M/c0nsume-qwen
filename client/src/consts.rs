@@ -53,3 +53,9 @@ pub(crate) const PATH_UPLOAD:         &str = "upload/";
 pub(crate) fn join_base(base: &str, path: &str) -> String {
     if base.ends_with('/') { format!("{base}{path}") } else { format!("{base}/{path}") }
 }
+
+
+// mode
+pub(crate) fn server_mode() -> String {
+    get_var("MODE").unwrap_or_else(|| "local".to_string())
+}
