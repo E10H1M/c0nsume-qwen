@@ -27,8 +27,10 @@ async fn main() -> std::io::Result<()> {
     let image_base         = consts::server_image();
     let upload_image_base  = consts::server_image_upload();
     let upload_base        = consts::server_upload();
+    let mode               = consts::server_mode(); // <-- NEW
 
     println!("🚀 Actix server running at: http://{}:{}/", host, port);
+    println!("⚙️  MODE         {}", mode); // <-- NEW
     println!("🔗 {:<12} {}", "route",        server_route);
     for (backend, url) in [
         ("gen_image",    gen_image_base.as_str()),
