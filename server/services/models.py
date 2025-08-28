@@ -2,7 +2,8 @@
 import gc, torch
 import torch.nn as nn
 from diffusers import AutoModel, DiffusionPipeline, QwenImageTransformer2DModel, GGUFQuantizationConfig
-from config import LORA_PATH, TORCH_DTYPE, QUANT_CONFIG, AVAILABLE_MODELS, GGUF_MODELS, USE_GGUF
+from config import TORCH_DTYPE, QUANT_CONFIG, AVAILABLE_MODELS, GGUF_MODELS, USE_GGUF
+from services.lora_manager import load_lora
 
 def _gb(x):
     return f"{(x/(1024**3)):.2f} GB"
@@ -112,7 +113,7 @@ def build_pipe(model_id: str):
         transformer=transformer,
         torch_dtype=TORCH_DTYPE,
     )
-    pipe.load_lora_weights(LORA_PATH)
+    load_lora(pipe)
     pipe.enable_model_cpu_offload()
     return pipe
 
@@ -130,7 +131,7 @@ def build_pipe_gguf(model_id: str, gguf_path: str):
         transformer=transformer,   # override!
         torch_dtype=torch.bfloat16,
     )
-    pipe.load_lora_weights(LORA_PATH)
+    load_lora(pipe)
     pipe.enable_model_cpu_offload()
     return pipe
 
