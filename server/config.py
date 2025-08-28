@@ -28,8 +28,9 @@ GGUF_MODELS = {
 MODE = os.environ["MODE"]  # required
 MODEL_ID = AVAILABLE_MODELS[MODE]
 
-# Shared LoRA path (works for both)
-LORA_PATH = os.environ["QWEN_LORA_PATH"]
+# LoRA config straight from env
+LORA_PATH   = os.environ["QWEN_LORA_PATH"]
+LORA_SELECT = os.environ["QWEN_LORA_SELECT"]
 
 # Output directory (fake S3 bucket for now)
 OUTPUT_DIR = os.environ["OUTPUT_DIR"]
