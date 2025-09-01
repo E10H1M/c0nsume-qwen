@@ -1,0 +1,87 @@
+/* /static/css/layerGenerator.css */
+
+/* Shell */
+.layer-generator{
+  margin:0 auto;
+  padding:20px;
+  max-width:1200px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--panel);
+  box-shadow:0 2px 10px var(--shadow);
+}
+
+/* space the embedded WebGPU scene from the controls */
+.layer-generator > .basic-scene{ margin-bottom:16px; }
+
+/* stack of cards */
+.ctrl-stack{ display:flex; flex-direction:column; gap:12px; }
+
+/* card base */
+.ctrl-card{
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(255,255,255,0.02);
+  box-shadow:inset 0 1px 0 rgba(0,0,0,.05);
+  padding:10px 12px;
+}
+
+/* ------------------ PROMPT CARD ------------------ */
+.ctrl-card.prompt{
+  display:grid;
+  grid-template-columns:max-content 1fr; /* label | textarea */
+  align-items:start;
+  gap:12px;
+}
+
+.ctrl-card.prompt .label{
+  font-size:12px; color:var(--muted);
+  padding-top:6px; white-space:nowrap;
+}
+
+.ctrl-card.prompt textarea{
+  min-height:110px; resize:vertical; width:100%;
+  background:transparent;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 12px;
+  color:var(--ink); font-size:14px; line-height:1.45;
+  outline:none;
+}
+.ctrl-card.prompt textarea:focus{ border-color:var(--ink); }
+
+/* ------------------ ACTIONS CARD ------------------ */
+/* two equal columns so both buttons match width */
+.ctrl-card.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.ctrl-card button{
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--ink);
+  font-weight:600;
+  cursor:pointer;
+  transition:transform .05s ease, background .15s ease, border-color .15s ease;
+  width:100%; /* fill the column so both buttons are equal */
+}
+.ctrl-card button:hover{ border-color:var(--ink); }
+.ctrl-card button:active{ transform:translateY(1px); }
+
+/* status text slot if you ever add one */
+.layer-generator .status{ font-size:12px; color:var(--muted); margin-left:8px; }
+
+/* responsive */
+@media (max-width:900px){
+  .ctrl-card.prompt{ grid-template-columns:1fr; }
+  .ctrl-card.actions{ grid-template-columns:1fr; } /* stack buttons on small screens */
+}
+
+/* dark mode tweak */
+@media (prefers-color-scheme:dark){
+  .ctrl-card{ background:rgba(255,255,255,0.03); }
+}

@@ -1,0 +1,117 @@
+/* Basic scene (camera + shapes) */
+:root {
+  --wg-panel-bg: #f7f7f8;
+  --wg-panel-border: #e5e7eb;
+  --wg-text: #0f172a;
+  --wg-canvas-bg: #8b8b8b;
+  --wg-accent: #2563eb;          /* blue */
+  --wg-accent-ink: #ffffff;
+  --wg-btn-bg: #ffffff;
+  --wg-btn-hover: #eef2f7;
+  color-scheme: light dark;
+}
+
+[data-theme="dark"] {
+  --wg-panel-bg: #0f1115;
+  --wg-panel-border: #22252c;
+  --wg-text: #e8edf5;
+  --wg-canvas-bg: #4c4c4c;
+  --wg-accent: #7c3aed;          /* purple pop in dark */
+  --wg-accent-ink: #ffffff;
+  --wg-btn-bg: #16181f;
+  --wg-btn-hover: #1d212a;
+}
+
+/* Panel container */
+.basic-scene {
+  box-sizing: border-box;
+  margin: 16px auto;
+  padding: 16px 20px;
+  max-width: 1080px;
+  background: var(--wg-panel-bg);
+  border: 1px solid var(--wg-panel-border);
+  border-radius: 16px;
+  color: var(--wg-text);
+  display: grid;
+  gap: 12px;
+  justify-items: center;   /* center children, incl. canvas */
+}
+
+.basic-scene h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Toolbar */
+.scene-toolbar {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: var(--wg-btn-bg);
+  border: 1px solid var(--wg-panel-border);
+  border-radius: 10px;
+}
+
+/* Buttons */
+.cam-btn,
+.shape-btn {
+  appearance: none;
+  border: 1px solid var(--wg-panel-border);
+  background: var(--wg-btn-bg);
+  color: var(--wg-text);
+  padding: 8px 12px;
+  font: 600 14px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.02s ease;
+}
+
+.cam-btn:hover,
+.shape-btn:hover {
+  background: var(--wg-btn-hover);
+}
+
+.cam-btn:active,
+.shape-btn:active {
+  transform: translateY(1px);
+}
+
+.cam-btn.active,
+.shape-btn.active {
+  background: var(--wg-accent);
+  border-color: var(--wg-accent);
+  color: var(--wg-accent-ink);
+}
+
+/* Canvas */
+.scene-canvas {
+  width: clamp(260px, 80vw, 720px);
+  /* Use 1:1 to match cube/triangle; switch to 16 / 9 if you prefer widescreen */
+  aspect-ratio: 1 / 1;
+  display: block;
+  background: var(--wg-canvas-bg);
+  border: 1px solid var(--wg-panel-border);
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  justify-self: center;
+}
+
+/* Tiny screens: tighten buttons a bit */
+@media (max-width: 480px) {
+  .cam-btn,
+  .shape-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
