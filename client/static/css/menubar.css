@@ -132,3 +132,20 @@
 .menubar .dropdown {
   transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+
+/* Show checkmark for the active mode item */
+.menubar .dropdown button[role="menuitemradio"][aria-checked="true"]::after {
+  content: " ✓";
+}
+
+/* (Optional) align the checkmark to the right neatly */
+.menubar .dropdown button[role="menuitemradio"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.menubar .dropdown button[role="menuitemradio"]::after {
+  margin-left: auto;   /* pushes ✓ to the right edge */
+  opacity: 0.9;
+}
