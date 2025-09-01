@@ -4,69 +4,100 @@ import { createMenuBar } from "/static/js/menubar.js";
 import { createSidebar, addToHistory } from "/static/js/sidebar.js";
 import { createImageGenerator } from "/static/js/imageGenerator.js";
 import { createImageEditor } from "/static/js/imageEditor.js";
+// import { createBasicScene } from "/static/js/basicScene.js"; // keep only this WG GPU scene
+import { createLayerGenerator } from "/static/js/layerGenerator.js";
 
-// mount global UI
+// Mount global UI (sidebar first so menubar's "Toggle Sidebar" can find it)
 document.getElementById("sidebar-root").appendChild(createSidebar());
-document.getElementById("menubar-root").appendChild(createMenuBar());
 
-// roots
-const roots = {
-  editor: document.getElementById("image-editor-root"),
-  generator: document.getElementById("image-generator-root"),
+/**
+ * MODE REGISTRY (single source of truth)
+ * - Add/remove modes here and you’re done.
+ * - Each mode: label (for menubar), rootId (where to mount), mount() (returns element).
+ */
+const MODES = {
+  edit: {
+    label: "Image Edit",
+    rootId: "image-editor-root",
+    mount() {
+      const el = createImageEditor();
+      el.addEventListener("imageEdited", (e) => addToHistory(e.detail.id));
+      return el;
+    },
+  },
+  generate: {
+    label: "Generate",
+    rootId: "image-generator-root",
+    mount() {
+      const el = createImageGenerator();
+      el.addEventListener("imageGenerated", (e) => addToHistory(e.detail.id));
+      return el;
+    },
+  },
+  camera: {
+    label: "Basic Scene (WebGPU)",
+    rootId: "basic-scene-root",
+    mount() {
+      return createLayerGenerator("/static/img/love.jpeg");
+    },
+  },
 };
 
-// instances (lazy)
-const instances = {
-  editor: null,
-  generator: null,
-};
+// Build and mount the menubar from MODES (no default fallback)
+document.getElementById("menubar-root").appendChild(
+  createMenuBar({
+    modes: Object.entries(MODES).map(([key, m]) => ({ key, label: m.label })),
+  })
+);
 
-function mountEditor() {
-  if (!instances.editor) {
-    const el = createImageEditor();
-    el.addEventListener("imageEdited", (e) => addToHistory(e.detail.id));
-    roots.editor.appendChild(el);
-    instances.editor = el;
+// Wire roots and an instance cache
+Object.values(MODES).forEach((m) => {
+  m.root = document.getElementById(m.rootId);
+  if (!m.root) {
+    console.warn(`[app] Missing root #${m.rootId} for mode "${m.label}". UI will not mount.`);
+  }
+});
+const instances = {}; // modeKey -> mounted element
+
+function ensureMounted(modeKey) {
+  const m = MODES[modeKey];
+  if (!m || !m.root) return;
+  if (!instances[modeKey]) {
+    const el = m.mount();
+    m.root.appendChild(el);
+    instances[modeKey] = el;
   }
 }
 
-function mountGenerator() {
-  if (!instances.generator) {
-    const el = createImageGenerator();
-    el.addEventListener("imageGenerated", (e) => addToHistory(e.detail.id));
-    roots.generator.appendChild(el);
-    instances.generator = el;
-  }
+function showRoot(activeKey) {
+  Object.entries(MODES).forEach(([key, m]) => {
+    if (!m.root) return;
+    m.root.style.display = key === activeKey ? "" : "none";
+  });
 }
 
-// show/hide without destroying (fast & simple)
-function showRoot(which) {
-  roots.editor.style.display    = (which === "edit") ? "" : "none";
-  roots.generator.style.display = (which === "generate") ? "" : "none";
-}
-
-// single source of truth
-let mode = "edit";
+// Single source of truth for current mode
+let mode = null;
 function setMode(next) {
-  if (next === mode) return;
+  if (!MODES[next]) {
+    console.warn(`[app] Ignoring unknown mode: ${next}`);
+    return;
+  }
+  if (mode === next) return;
+
+  ensureMounted(next);
+  showRoot(next);
   mode = next;
 
-  if (mode === "edit")   mountEditor();
-  if (mode === "generate") mountGenerator();
-
-  showRoot(mode);
-
-  // let others (menubar) reflect the active mode
+  // notify menubar (for aria-checked / ✓)
   window.dispatchEvent(new CustomEvent("app:modeChanged", { detail: { mode } }));
 }
 
-// initial boot
-mountEditor();     // start in editor
-showRoot("edit");
-window.dispatchEvent(new CustomEvent("app:modeChanged", { detail: { mode: "edit" } }));
+// Initial boot
+setMode("edit");
 
-// menubar drives app mode
+// Menubar drives app mode (generic — no manual OR-chain)
 window.addEventListener("app:setMode", (e) => {
   const next = e.detail?.mode;
-  if (next === "edit" || next === "generate") setMode(next);
+  if (next && MODES[next]) setMode(next);
 });
